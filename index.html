@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Countdown SaaS — نظامی</title>
+<style>
+  /* Global */
+  :root{
+    --bg:#08130b;        /* very dark green */
+    --panel:#0f2b17;     /* dark olive panel */
+    --muted:#8fa37a;     /* muted olive text */
+    --accent:#9bbf52;    /* military accent */
+    --accent-dark:#7aa23a;
+    --card-border:rgba(155,191,82,0.08);
+    --text:#e6f3df;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Tahoma, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg, #04120a 0%, #07160b 100%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  .container{
+    max-width:920px;
+    margin:30px auto;
+    padding:20px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .logo{
+    width:56px;
+    height:56px;
+    border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#06220a;
+    box-shadow:0 6px 18px rgba(0,0,0,0.6);
+  }
+  h1{ margin:0; font-size:20px; }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    border:1px solid var(--card-border);
+    padding:18px;
+    border-radius:12px;
+    margin:14px 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  }
+
+  input[type="text"], input[type="datetime-local"], input[type="url"], input[type="email"], input[type="password"], textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 12px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.06);
+    background:rgba(0,0,0,0.15);
+    color:var(--text);
+  }
+
+  label{color:var(--muted); font-size:13px}
+
+  button{
+    background:var(--accent);
+    border:none;
+    color:#06220a;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.secondary{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  a{ color:var(--accent); text-decoration:none; }
+
+  /* Public view */
+  #publicView{
+    display:none;
+  }
+  #timer{
+    font-size:48px;
+    margin-top:12px;
+    color:var(--accent);
+    font-weight:800;
+    letter-spacing:1px;
+  }
+
+  .public-grid{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:16px;
+    align-items:start;
+  }
+
+  .photo{
+    width:220px;
+    height:220px;
+    border-radius:10px;
+    overflow:hidden;
+    background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .texts p{
+    margin:8px 0;
+    color:#dfeadf;
+    line-height:1.4;
+  }
+
+  /* Login box (inline) */
+  #loginBox{
+    display:none;
+  }
+
+  /* Events list */
+  #list .card{ padding:12px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+
+  /* footer fixed login for public */
+  .public-footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+  }
+
+  .muted-small{ color:var(--muted); font-size:13px; }
+
+  /* Responsive */
+  @media (max-width:720px){
+    .public-grid{ grid-template-columns:1fr; }
+    .photo{ width:100%; height:260px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">CD</div>
+      <div>
+        <h1>Countdown SaaS — تم نظامی</h1>
+        <div class="muted-small">لینک عمومی مستقیم به تایمر هدایت می‌شود</div>
+      </div>
+    </header>
+
+    <!-- LOGIN (می‌تواند به‌صورت modal/simple نمایش داده شود) -->
+    <div id="loginBox" class="card">
+      <h3>ورود</h3>
+      <label for="email">ایمیل</label>
+      <input id="email" type="email" placeholder="email@example.com">
+      <label for="password">رمز عبور</label>
+      <input id="password" type="password" placeholder="••••••">
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="loginUser()">ورود</button>
+        <button class="secondary" onclick="hideLogin()">انصراف</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD (برای کاربر وارد شده) -->
+    <div id="dashboard" style="display:none">
+      <div class="card">
+        <h3>ایجاد رویداد جدید</h3>
+        <label>عنوان رویداد</label>
+        <input id="title" type="text" placeholder="Event title">
+
+        <label>زمان پایان</label>
+        <input id="time" type="datetime-local">
+
+        <label>آدرس عکس (URL)</label>
+        <input id="photoUrl" type="url" placeholder="https://...">
+
+        <label>متن اول</label>
+        <input id="txt1" type="text" placeholder="متن اول (مثلاً مکان)">
+
+        <label>متن دوم</label>
+        <input id="txt2" type="text" placeholder="متن دوم (مثلاً نکات)">
+
+        <label>متن سوم</label>
+        <input id="txt3" type="text" placeholder="متن سوم (مثلاً تماس)">
+
+        <div style="margin-top:10px;">
+          <button onclick="createNewEvent()">ایجاد رویداد</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>رویدادهای شما</h3>
+        <div id="list"></div>
+      </div>
+    </div>
+
+    <!-- PUBLIC VIEW -->
+    <div id="publicView" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h2 id="eventTitle">در حال بارگذاری...</h2>
+          <div id="timer">--:--:--</div>
+        </div>
+        <div class="muted-small">اشتراک‌گذاری: <span id="shareLink"></span></div>
+      </div>
+
+      <div class="public-grid" style="margin-top:12px;">
+        <div class="photo">
+          <img id="eventPhoto" src="" alt="event photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 400 300\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%230b2412\\' /><text x=\\'50%\\' y=\\'50%\\' fill=\\'%239bbf52\\' font-family=\\'Tahoma\\' font-size=20 text-anchor=\\'middle\\' dy=\\'.3em\\'>عکس ندارد</text></svg>';">
+        </div>
+
+        <div class="texts">
+          <p id="text1">—</p>
+          <p id="text2">—</p>
+          <p id="text3">—</p>
+        </div>
+      </div>
+
+      <div class="public-footer">
+        <div class="muted-small">این صفحه عمومی است؛ نیازی به ورود نیست.</div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="openInApp()">باز کردن در برنامه</button>
+          <button class="secondary" id="publicLoginBtn" onclick="showLoginFromPublic()">ورود</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Firebase compat (همان ورژن شما) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script>
+    // ====== Firebase Config (حتماً بررسی شود) ======
+    const firebaseConfig = {
+      apiKey: "AIzaSyA7SH4jNcMnnNi_zH8q-JVjSsS2zQ912yk",
+      authDomain: "countdown-6308f.firebaseapp.com",
+      databaseURL: "https://countdown-6308f-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "countdown-6308f",
+      storageBucket: "countdown-6308f.firebasestorage.app",
+      messagingSenderId: "286090814689",
+      appId: "1:286090814689:web:46fa7359d37e571785c3a0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // عناصر DOM
+    const params = new URLSearchParams(location.search);
+    const publicId = params.get("id");
+    const isPublic = !!publicId;
+
+    const loginBox = document.getElementById("loginBox");
+    const dashboard = document.getElementById("dashboard");
+    const publicView = document.getElementById("publicView");
+    const eventTitle = document.getElementById("eventTitle");
+    const timerEl = document.getElementById("timer");
+    const listEl = document.getElementById("list");
+    const shareLinkEl = document.getElementById("shareLink");
+    const eventPhoto = document.getElementById("eventPhoto");
+    const text1 = document.getElementById("text1");
+    const text2 = document.getElementById("text2");
+    const text3 = document.getElementById("text3");
+
+    // اگر پارامتر id موجود است، سریع public را بارگذاری می‌کنیم.
+    if(isPublic){
+      // نمایش مستقیم نما‌ی عمومی (ajax روی دیتابیس)
+      loadPublic(publicId);
+    }
+
+    // مراقبت: وقتی در حالت عمومی هستیم نباید onAuthStateChanged نمایش داشبورد بکند
+    auth.onAuthStateChanged(user=>{
+      if(isPublic){
+        // هیچ کاری نمی‌کنیم — اجازه می‌دهیم صفحه عمومی بماند
+        return;
+      }
+      if(user){
+        showDashboard();
+      } else {
+        showLogin();
+      }
+    });
+
+    // نمایش/مخفی کردن فرم‌ها
+    function showDashboard(){
+      loginBox.style.display = "none";
+      publicView.style.display = "none";
+      dashboard.style.display = "block";
+      loadEvents();
+    }
+    function showLogin(){
+      dashboard.style.display = "none";
+      publicView.style.display = "none";
+      loginBox.style.display = "block";
+    }
+    function hideLogin(){
+      loginBox.style.display = "none";
+    }
+
+    function showLoginFromPublic(){
+      // در حالت عمومی دکمه ورود فرم لاگین را نشان می‌دهد (حذف پارامتر id برای رفتن به داشبورد بعد از لاگین)
+      // ما فرم را روی صفحه نشان می‌دهیم؛ کاربر بعد از ورود می‌تواند به داشبورد برگردد.
+      loginBox.style.display = "block";
+      dashboard.style.display = "none";
+      // اختیاری: remove id from url so after login user can view dashboard normally
+      history.replaceState(null, '', location.pathname);
+    }
+
+    function openInApp(){
+      // باز کردن همان لینک در برنامه (با نمایش داشبورد) — حذف پارامتر id و رفرش
+      history.replaceState(null, '', location.pathname);
+      // اگر احراز هویت شده‌ایم، showDashboard توسط onAuthStateChanged انجام می‌شود؛ در غیر اینصورت فرم ورود نشان داده می‌شود.
+      if(auth.currentUser){
+        showDashboard();
+      } else {
+        showLogin();
+      }
+    }
+
+    // ===== Authentication =====
+    function loginUser(){
+      const emailVal = document.getElementById("email").value;
+      const passVal = document.getElementById("password").value;
+      if(!emailVal || !passVal){ alert("ایمیل و رمز را وارد کنید"); return; }
+      auth.signInWithEmailAndPassword(emailVal, passVal)
+        .then(()=>{ showDashboard(); })
+        .catch(err=>{ alert(err.message); });
+    }
+
+    // ===== Events CRUD =====
+    function createNewEvent(){
+      const user = auth.currentUser;
+      if(!user){ alert("ابتدا وارد شوید"); return; }
+
+      const titleVal = document.getElementById("title").value;
+      const timeVal = document.getElementById("time").value;
+      const photoVal = document.getElementById("photoUrl").value;
+      const v1 = document.getElementById("txt1").value;
+      const v2 = document.getElementById("txt2").value;
+      const v3 = document.getElementById("txt3").value;
+
+      if(!titleVal || !timeVal){ alert("عنوان و زمان را وارد کنید"); return; }
+
+      const id = "ev_" + Date.now();
+
+      db.ref("events/"+id).set({
+        title: titleVal,
+        endTime: timeVal,
+        photoURL: photoVal || "",
+        text1: v1 || "",
+        text2: v2 || "",
+        text3: v3 || "",
+        uid: user.uid
+      }).then(()=>{
+        alert("رویداد ساخته شد!");
+        loadEvents();
+        // پاک کردن فرم ساده
+        document.getElementById("title").value = "";
+        document.getElementById("time").value = "";
+        document.getElementById("photoUrl").value = "";
+        document.getElementById("txt1").value = "";
+        document.getElementById("txt2").value = "";
+        document.getElementById("txt3").value = "";
+      }).catch(err=>{
+        alert(err.message);
+      });
+    }
+
+    function loadEvents(){
+      // لیست رویدادها برای کاربر فعلی
+      db.ref("events").once("value").then(snap=>{
+        const data = snap.val() || {};
+        listEl.innerHTML = "";
+        const uid = auth.currentUser ? auth.currentUser.uid : null;
+        for(let id in data){
+          const e = data[id];
+          if(e.uid === uid){
+            const link = location.origin + location.pathname + '?id=' + id;
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `<div>
+                <b>${escapeHtml(e.title)}</b><div class="muted-small">${e.endTime}</div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <a href="${link}" target="_blank">مشاهده عمومی</a>
+                <button class="secondary" onclick="copyLink('${link}')">کپی لینک</button>
+              </div>`;
+            listEl.appendChild(card);
+          }
+        }
+        if(listEl.innerHTML === "") listEl.innerHTML = '<div class="muted-small">رویدادی یافت نشد</div>';
+      });
+    }
+
+    function copyLink(link){
+      navigator.clipboard?.writeText(link).then(()=>{ alert("لینک کپی شد"); }).catch(()=>{ prompt("کپی نشد، این لینک را کپی کنید:", link); });
+    }
+
+    // ===== Public timer loader =====
+    let publicInterval = null;
+    function loadPublic(id){
+      db.ref("events/"+id).once("value").then(snap=>{
+        const e = snap.val();
+        if(!e){
+          eventTitle.innerText = "رویدادی یافت نشد";
+          return;
+        }
+
+        // نمایش نماهای مناسب
+        loginBox.style.display = "none";
+        dashboard.style.display = "none";
+        publicView.style.display = "block";
+
+        eventTitle.innerText = e.title || "بدون عنوان";
+        eventPhoto.src = e.photoURL || "";
+        text1.innerText = e.text1 || " ";
+        text2.innerText = e.text2 || " ";
+        text3.innerText = e.text3 || " ";
+
+        const publicLink = location.origin + location.pathname + '?id=' + id;
+        shareLinkEl.innerText = publicLink;
+
+        if(publicInterval) clearInterval(publicInterval);
+
+        publicInterval = setInterval(()=>{
+          const diff = new Date(e.endTime) - new Date();
+          if(isNaN(diff)){
+            timerEl.innerText = "زمان نامعتبر";
+            return;
+          }
+          if(diff <= 0){
+            timerEl.innerText = "🎉 تمام شد";
+            clearInterval(publicInterval);
+            return;
+          }
+          const d = Math.floor(diff / 86400000);
+          const h = Math.floor((diff % 86400000) / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          timerEl.innerText = `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+        }, 1000);
+      }).catch(err=>{
+        eventTitle.innerText = "خطا در بارگذاری";
+        console.error(err);
+      });
+    }
+
+    // ===== Utilities =====
+    function pad(n){ return n<10? '0'+n : n; }
+    function escapeHtml(s){
+      if(!s) return '';
+      return s.replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+    }
+
+    // اگر فِلَگ public نیست و هیچ کاربری لاگین نیست، صفحه لاگین نمایش داده می‌شود (onAuthStateChanged بالا)
+    // اگر می‌خواهید فوراً فرم را در حال local تست ببینید، می‌توانید isPublic را آرایش کنید یا URL با ?id=ev_xxx باز کنید.
+
+  </script>
+</body>
+</html>
