@@ -12,58 +12,36 @@
     /* ===== Reset & Vars ===== */
     *,*::before,*::after{box-sizing:border-box}
     :root{
-      --bg1:#061007;
-      --bg2:#08140b;
-      --panel:#0e2316;
-      --card:#0f2818;
-      --muted:#98b77a;
-      --accent:#9cc742;
-      --accent-2:#7aa230;
-      --glass: rgba(255,255,255,0.03);
-      --text:#e6f6e8;
-      --max-width:1200px;
-      --gap:18px;
+      --bg1:#061007; --bg2:#08140b; --panel:#0e2316; --muted:#98b77a;
+      --accent:#9cc742; --accent-2:#7aa230; --text:#e6f6e8; --max-width:1200px; --gap:18px;
     }
     html,body{height:100%;margin:0;font-family:Inter, Tahoma, Arial,sans-serif;background:
       radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, transparent 40%), linear-gradient(180deg,var(--bg1),var(--bg2)); color:var(--text); -webkit-font-smoothing:antialiased}
-
-    /* ===== Layout ===== */
-    .wrap{max-width:var(--max-width);margin:22px auto;padding:18px;}
+    .wrap{max-width:var(--max-width);margin:22px auto;padding:18px}
     header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:56px;height:56px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:Orbitron;color:#04120a;font-weight:900}
-    .title{font-family:Orbitron, sans-serif;font-size:18px;letter-spacing:1px;}
+    .title{font-family:Orbitron, sans-serif;font-size:18px;letter-spacing:1px}
     .top-actions{display:flex;gap:10px}
     .btn-login{background:transparent;border:1px solid rgba(156,199,66,0.12); color:var(--accent); padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
 
     .main-grid{display:grid;grid-template-columns:260px 1fr;gap:var(--gap);align-items:start}
     @media (max-width:920px){ .main-grid{grid-template-columns:1fr} }
 
-    /* ===== Sidebar ===== */
+    /* Sidebar & admin */
     .sidebar{background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.01));border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03)}
     .nav{display:flex;flex-direction:column;gap:8px;margin-top:12px}
     .nav a{color:var(--muted); text-decoration:none; padding:10px;border-radius:8px; display:flex;align-items:center; gap:10px}
-    .nav a.active{background:rgba(156,199,66,0.05); color:var(--accent); font-weight:700; border-left:3px solid var(--accent)}
     .status-card{background:transparent;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02); margin-top:12px}
-    .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)}
-
     .radar{margin-top:12px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);text-align:center}
-    .radar-wrap{position:relative;width:200px;height:200px;margin:8px auto}
-    .radar-circle{position:absolute;inset:0;border-radius:50%;background:
-      radial-gradient(circle at center, rgba(156,199,66,0.02) 0%, transparent 40%),
-      repeating-radial-gradient(circle at center, rgba(156,199,66,0.01) 0 25px, transparent 25px 50px)}
-    .radar-sweep{position:absolute;left:50%;top:50%;width:120%;height:2px;background:linear-gradient(90deg, transparent, rgba(156,199,66,0.85), transparent); transform-origin:left center; animation:spin 4s linear infinite}
-    @keyframes spin{from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)}}
-
     .login-card{margin-top:12px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04))}
     .login-card input{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);margin-top:8px}
     .login-card .btn{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#04120a;font-weight:800;cursor:pointer}
 
-    /* ===== Content ===== */
+    /* Content */
     .content{border-radius:12px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06));border:1px solid rgba(255,255,255,0.02)}
     .mission-sub{ text-align:center;color:var(--muted);font-size:12px;margin-bottom:6px}
     .mission-title{ text-align:center;font-family:Orbitron;font-size:34px;color:var(--accent);margin:0}
-
     .timer-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
     .time-seg{min-width:92px;background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.02));padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(156,199,66,0.06)}
     .time-num{font-family:Orbitron;font-size:34px;color:var(--accent);letter-spacing:1px}
@@ -82,8 +60,6 @@
     .actions-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
     .green-btn{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#04120a;padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:800}
     .small-btn{padding:8px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
-
-    /* Dashboard lower */
     .dash-grid{display:flex;gap:16px;margin-top:16px}
     .form{flex:1;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,255,255,0.02)}
     .events{width:360px;max-width:100%;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,255,255,0.02)}
@@ -92,108 +68,145 @@
     .event-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.06);margin-top:8px;border:1px solid rgba(255,255,255,0.02)}
     .event-meta{font-size:13px;color:var(--muted)}
     .powered{font-size:11px;color:var(--muted);text-align:right;margin-top:10px}
+
+    /* Loading skeleton for public */
+    .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:6px; height:14px; width:100%; animation: pulse 1.6s infinite;}
+    @keyframes pulse{0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6}}
+
+    /* Public-mode CSS applied immediately (prevents flicker) */
+    .public-mode #sidebar { opacity: 0.45; pointer-events: none; user-select: none; }
+    .public-mode #loginCard { display: none !important; }
+    .public-mode #createForm, .public-mode .events, .public-mode #mainNav { opacity: 0.45; pointer-events: none; user-select: none; }
+    .public-mode #dashboardView { display: none !important; }
+    .public-mode #publicView { display: block !important; }
   </style>
 </head>
 <body>
+  <!-- inline pre-check: very early set public-mode to avoid any flash of admin UI -->
+  <script>
+    (function(){
+      try{
+        const p = new URLSearchParams(location.search);
+        if(p.get('id')){
+          document.documentElement.classList.add('public-mode');
+          window.__IS_PUBLIC = true;
+          window.__PUBLIC_ID = p.get('id');
+        } else {
+          window.__IS_PUBLIC = false;
+        }
+      } catch(e){
+        window.__IS_PUBLIC = false;
+      }
+    })();
+  </script>
+
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo">CD</div>
+        <div class="logo" aria-hidden="true">CD</div>
         <div>
           <div class="title">COUNTDOWN SAAS</div>
           <div style="font-size:12px;color:var(--muted)">Mission Objective</div>
         </div>
       </div>
       <div class="top-actions">
-        <button id="loginTopBtn" class="btn-login" onclick="onTopLogin()">Login</button>
+        <button id="loginTopBtn" class="btn-login" onclick="onTopLogin()" aria-label="Admin login">Login</button>
       </div>
     </header>
 
     <div class="main-grid">
       <!-- SIDEBAR -->
-      <aside class="sidebar" id="sidebar">
+      <aside class="sidebar" id="sidebar" aria-hidden="false">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div style="color:var(--accent);font-weight:800">COUNTDOWN SAAS</div>
           <div style="color:var(--muted);font-size:12px">v1</div>
         </div>
 
-        <nav class="nav">
+        <nav class="nav" id="mainNav" aria-label="Admin navigation">
           <a href="#" id="navDashboard" class="active" onclick="showPanel('dashboard')">Dashboard</a>
           <a href="#" id="navCreate" onclick="showPanel('create')">Create Event</a>
           <a href="#" id="navMy" onclick="showPanel('myevents')">My Events</a>
-          <a href="#" onclick="logout()">Logout</a>
+          <a href="#" id="navLogout" onclick="logout()">Logout</a>
         </nav>
 
-        <div class="status-card">
+        <div class="status-card" aria-hidden="true">
           <div style="font-size:12px;color:var(--muted);margin-bottom:8px">STATUS</div>
-          <div style="display:flex;gap:8px;align-items:center"><div class="dot"></div><div style="font-weight:700">ACTIVE</div></div>
+          <div style="display:flex;gap:8px;align-items:center"><div class="dot" aria-hidden="true"></div><div style="font-weight:700">ACTIVE</div></div>
           <div style="height:8px"></div>
           <div style="font-size:12px;color:var(--muted)">LOCATION</div>
           <div style="color:var(--muted);margin-top:6px">CLASSIFIED</div>
         </div>
 
-        <div class="radar">
+        <div class="radar" aria-hidden="true">
           <div style="font-size:12px;color:var(--muted);margin-bottom:8px">RADAR</div>
-          <div class="radar-wrap"><div class="radar-circle"></div><div class="radar-sweep"></div></div>
+          <div class="radar-wrap"><div class="radar-circle" aria-hidden="true"></div><div class="radar-sweep" aria-hidden="true"></div></div>
           <div style="font-size:12px;color:var(--muted);margin-top:8px">STAY FOCUSED — MISSION IS EVERYTHING</div>
         </div>
 
         <div class="login-card" id="loginCard">
           <div style="font-weight:800;color:var(--accent);font-family:Orbitron">ADMIN LOGIN</div>
-          <input id="adminEmail" placeholder="Email">
-          <input id="adminPass" type="password" placeholder="Password">
-          <button class="btn" onclick="loginUser()">Login</button>
+          <input id="adminEmail" placeholder="Email" aria-label="admin email">
+          <input id="adminPass" type="password" placeholder="Password" aria-label="admin password">
+          <button class="btn" id="adminLoginBtn" onclick="loginUser()">Login</button>
         </div>
       </aside>
 
       <!-- CONTENT -->
       <main class="content">
-        <!-- PUBLIC VIEW -->
-        <section id="publicView" style="display:none">
+        <!-- PUBLIC VIEW (hidden by default; class public-mode forces display) -->
+        <section id="publicView" style="display:none" aria-live="polite" aria-label="Public event view">
           <div class="mission-sub">MISSION OBJECTIVE</div>
           <h2 class="mission-title" id="missionTitle">OPERATION ALPHA</h2>
 
-          <div class="timer-row" role="timer" aria-live="polite">
-            <div class="time-seg"><div class="time-num" id="days">00</div><div class="time-label">DAYS</div></div>
-            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
-            <div class="time-seg"><div class="time-num" id="hours">00</div><div class="time-label">HOURS</div></div>
-            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
-            <div class="time-seg"><div class="time-num" id="minutes">00</div><div class="time-label">MINUTES</div></div>
-            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
-            <div class="time-seg"><div class="time-num" id="seconds">00</div><div class="time-label">SECONDS</div></div>
+          <div id="publicLoading" style="margin-top:10px">
+            <div class="skeleton" style="height:18px;width:160px;margin:6px auto"></div>
           </div>
 
-          <div class="hero" id="heroBox"><img id="heroImg" src="" alt="mission photo"></div>
+          <div class="timer-row" role="timer" aria-atomic="true" style="margin-top:12px">
+            <div class="time-seg"><div class="time-num" id="days">--</div><div class="time-label">DAYS</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="hours">--</div><div class="time-label">HOURS</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="minutes">--</div><div class="time-label">MINUTES</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="seconds">--</div><div class="time-label">SECONDS</div></div>
+          </div>
 
-          <div class="messages">
-            <div class="msg"><div class="icon">★</div><div class="body"><div class="title">MESSAGE 1</div><input id="publicMsg1" placeholder="Enter first message..."></div></div>
-            <div class="msg"><div class="icon">✚</div><div class="body"><div class="title">MESSAGE 2</div><input id="publicMsg2" placeholder="Enter second message..."></div></div>
-            <div class="msg"><div class="icon">⚑</div><div class="body"><div class="title">MESSAGE 3</div><input id="publicMsg3" placeholder="Enter third message..."></div></div>
+          <div class="hero" id="heroBox" aria-hidden="false" style="margin-top:14px">
+            <img id="heroImg" src="" alt="mission photo" />
+          </div>
+
+          <div class="messages" style="margin-top:12px">
+            <div class="msg"><div class="icon" aria-hidden="true">★</div><div class="body"><div class="title">MESSAGE 1</div><input id="publicMsg1" placeholder="..." disabled aria-readonly="true"></div></div>
+            <div class="msg"><div class="icon" aria-hidden="true">✚</div><div class="body"><div class="title">MESSAGE 2</div><input id="publicMsg2" placeholder="..." disabled aria-readonly="true"></div></div>
+            <div class="msg"><div class="icon" aria-hidden="true">⚑</div><div class="body"><div class="title">MESSAGE 3</div><input id="publicMsg3" placeholder="..." disabled aria-readonly="true"></div></div>
           </div>
 
           <div class="actions-row">
             <div style="color:var(--muted);font-size:12px">Share: <span id="shareUrl" style="color:var(--accent);font-family:Orbitron"></span></div>
-            <div style="display:flex;gap:8px"><button class="green-btn" onclick="openInApp()">Open in App</button><button class="small-btn" onclick="copyShare()">Copy Link</button></div>
+            <div style="display:flex;gap:8px"><button class="green-btn" id="openInAppBtn" onclick="openInApp()">Open in App</button><button class="small-btn" id="copyShareBtn" onclick="copyShare()">Copy Link</button></div>
           </div>
+
+          <div id="publicError" style="color:#f77;margin-top:10px;display:none"></div>
         </section>
 
-        <!-- DASHBOARD (create + list) -->
-        <section id="dashboardView">
+        <!-- DASHBOARD -->
+        <section id="dashboardView" style="display:block">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div style="font-size:18px;color:var(--accent);font-family:Orbitron">Create New Event</div>
           </div>
 
           <div class="dash-grid">
             <div class="form" id="createForm">
-              <label>Event Title</label><input id="title" placeholder="Operation Alpha">
-              <label>Select Date & Time</label><input id="time" type="datetime-local">
-              <label>Image URL</label><input id="photoUrl" placeholder="https://...">
+              <label>Event Title</label><input id="title" placeholder="Operation Alpha" aria-label="event title">
+              <label>Select Date & Time</label><input id="time" type="datetime-local" aria-label="event datetime">
+              <label>Image URL</label><input id="photoUrl" placeholder="https://..." aria-label="event image url">
               <label>Message 1</label><input id="txt1" placeholder="First message">
               <label>Message 2</label><input id="txt2" placeholder="Second message">
               <label>Message 3</label><input id="txt3" placeholder="Third message">
               <div style="margin-top:10px;display:flex;gap:8px">
-                <button class="green-btn" onclick="createNewEvent()">Create Event</button>
-                <button class="small-btn" onclick="clearCreate()">Clear</button>
+                <button class="green-btn" id="createBtn" onclick="createNewEvent()">Create Event</button>
+                <button class="small-btn" id="clearBtn" onclick="clearCreate()">Clear</button>
               </div>
             </div>
 
@@ -209,13 +222,13 @@
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
   <script>
-    /* ===== Firebase config -  ===== */
+    /* ===== Firebase config - بررسی کنید قبل از deploy ===== */
     const firebaseConfig = {
       apiKey: "AIzaSyA7SH4jNcMnnNi_zH8q-JVjSsS2zQ912yk",
       authDomain: "countdown-6308f.firebaseapp.com",
@@ -229,106 +242,121 @@
     const auth = firebase.auth();
     const db = firebase.database();
 
-    /* ===== DOM refs ===== */
-    const params = new URLSearchParams(location.search);
-    const publicId = params.get('id');
+    // ===== state & refs =====
+    const isPublic = !!window.__IS_PUBLIC;
+    const publicId = window.__PUBLIC_ID || null;
 
     const publicView = document.getElementById('publicView');
     const dashboardView = document.getElementById('dashboardView');
+    const publicLoading = document.getElementById('publicLoading');
+    const publicError = document.getElementById('publicError');
 
     const missionTitle = document.getElementById('missionTitle');
     const heroImg = document.getElementById('heroImg');
-
+    const shareUrlEl = document.getElementById('shareUrl');
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
 
-    const shareUrlEl = document.getElementById('shareUrl');
-
-    const eventsList = document.getElementById('eventsList');
-
     let publicInterval = null;
 
-    /* ===== Helpers ===== */
-    function pad(n){ return n<10? '0'+n : String(n); }
-    function safeText(s){ return (s===null||s===undefined)? '' : String(s); }
+    // ===== utilities =====
+    function pad(n){ return n < 10 ? '0' + n : String(n); }
+    function safeText(s){ return (s === null || s === undefined) ? '' : String(s); }
     function copyToClipboard(text){
       if(!navigator.clipboard) { prompt('Copy this link:', text); return; }
-      navigator.clipboard.writeText(text).then(()=>alert('Link copied')).catch(()=>prompt('Copy this link:', text));
+      navigator.clipboard.writeText(text).then(()=>{ showToast('لینک کپی شد'); }).catch(()=>prompt('Copy this link:', text));
+    }
+    function showToast(msg){ try{ console.log(msg); } catch(e){} } // lightweight: replace with UI toast if wanted
+
+    // ===== admin UI hard-disable for public mode (CSS already hides; this is extra) =====
+    function hardDisableAdminUI(){
+      // hide login top button
+      const tbtn = document.getElementById('loginTopBtn');
+      if(tbtn) tbtn.style.display = 'none';
+      // disable inputs & buttons
+      document.querySelectorAll('#createForm input, #createForm button, #eventsList .small-btn, #adminEmail, #adminPass, #adminLoginBtn, #navLogout, #mainNav a').forEach(el=>{
+        try{ el.disabled = true; el.setAttribute('aria-hidden','true'); } catch(e){ el.style.pointerEvents='none'; el.setAttribute('aria-hidden','true'); }
+      });
     }
 
-    /* ===== UI logic ===== */
-    function showPanel(name){
-      // simple nav handler to keep code clear (only dashboardView used)
-      // if future: implement panel switching
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-
-    function onTopLogin(){
-      document.getElementById('loginCard').scrollIntoView({behavior:'smooth'});
-    }
-
-    /* ===== Auth ===== */
+    // ===== Auth handling =====
     auth.onAuthStateChanged(user=>{
-      // if viewing public event, don't interfere
-      if(publicId){
+      if(isPublic){
+        // don't switch pages in public mode
         return;
       }
-      // show dashboard always; creating events requires login
-      dashboardView.style.display = 'block';
+      // normal flow
       publicView.style.display = 'none';
+      dashboardView.style.display = 'block';
       if(user) loadUserEvents();
     });
 
-    function loginUser(){
-      const email = document.getElementById('adminEmail').value.trim();
-      const pass = document.getElementById('adminPass').value;
-      if(!email||!pass){ alert('Email and password required'); return; }
-      auth.signInWithEmailAndPassword(email, pass).then(()=>{ alert('Logged in'); loadUserEvents(); }).catch(e=>alert(e.message));
-    }
-    function logout(){ auth.signOut().then(()=>{ alert('Logged out'); eventsList.innerHTML=''; }); }
+    // ===== Admin actions (guarded) =====
+    function onTopLogin(){ if(isPublic) return; document.getElementById('loginCard').scrollIntoView({behavior:'smooth'}); }
 
-    /* ===== Create / Load / Delete events ===== */
-    function createNewEvent(){
+    function loginUser(){
+      if(isPublic){ showToast('Action disabled in public view'); return; }
+      const email = (document.getElementById('adminEmail') || {}).value || '';
+      const pass = (document.getElementById('adminPass') || {}).value || '';
+      if(!email || !pass){ alert('Email and password required'); return; }
+      auth.signInWithEmailAndPassword(email.trim(), pass).then(()=>{ showToast('Logged in'); loadUserEvents(); }).catch(e=>alert(e.message));
+    }
+
+    function logout(){
+      if(isPublic){ showToast('Action disabled in public view'); return; }
+      auth.signOut().then(()=>{ showToast('Logged out'); document.getElementById('eventsList').innerHTML=''; });
+    }
+
+    // ===== Events CRUD (guarded) =====
+    async function createNewEvent(){
+      if(isPublic){ showToast('Action disabled in public view'); return; }
       const user = auth.currentUser;
       if(!user){ alert('Please login as admin to create events'); return; }
 
-      const title = document.getElementById('title').value.trim();
-      const endTime = document.getElementById('time').value;
-      const photoURL = document.getElementById('photoUrl').value.trim();
-      const text1 = document.getElementById('txt1').value.trim();
-      const text2 = document.getElementById('txt2').value.trim();
-      const text3 = document.getElementById('txt3').value.trim();
+      const title = (document.getElementById('title')||{}).value || '';
+      const endTime = (document.getElementById('time')||{}).value || '';
+      const photoURL = (document.getElementById('photoUrl')||{}).value || '';
+      const text1 = (document.getElementById('txt1')||{}).value || '';
+      const text2 = (document.getElementById('txt2')||{}).value || '';
+      const text3 = (document.getElementById('txt3')||{}).value || '';
 
       if(!title || !endTime){ alert('Title and date/time are required'); return; }
-
-      const id = 'ev_' + Date.now();
-      db.ref('events/' + id).set({
-        title, endTime, photoURL, text1, text2, text3, uid: user.uid
-      }).then(()=>{ alert('Event created'); clearCreate(); loadUserEvents(); }).catch(e=>alert(e.message));
+      try{
+        const id = 'ev_' + Date.now();
+        await db.ref('events/' + id).set({ title, endTime, photoURL, text1, text2, text3, uid: user.uid });
+        showToast('Event created');
+        clearCreate();
+        loadUserEvents();
+      } catch(err){
+        console.error(err);
+        alert('خطا در ایجاد رویداد: ' + (err.message || err));
+      }
     }
 
     function clearCreate(){
+      if(isPublic) return;
       ['title','time','photoUrl','txt1','txt2','txt3'].forEach(i=>{ const el=document.getElementById(i); if(el) el.value=''; });
     }
 
-    function loadUserEvents(){
+    async function loadUserEvents(){
+      if(isPublic) return;
       const user = auth.currentUser;
       if(!user) return;
-      db.ref('events').orderByChild('uid').equalTo(user.uid).once('value').then(snap=>{
+      try{
+        const snap = await db.ref('events').orderByChild('uid').equalTo(user.uid).once('value');
         const data = snap.val() || {};
+        const eventsList = document.getElementById('eventsList');
         eventsList.innerHTML = '';
-        const ids = Object.keys(data);
-        if(!ids.length){ eventsList.innerHTML = '<div style="color:var(--muted);margin-top:8px">No events yet</div>'; return; }
+        const ids = Object.keys(data || {});
+        if(ids.length === 0){ eventsList.innerHTML = '<div style="color:var(--muted);margin-top:8px">No events yet</div>'; return; }
         ids.reverse().forEach(id=>{
           const e = data[id];
-          const row = document.createElement('div'); row.className = 'event-item';
+          const row = document.createElement('div');
+          row.className = 'event-item';
           const link = location.origin + location.pathname + '?id=' + id;
-          row.innerHTML = `<div>
-              <div style="font-weight:700;color:var(--text)">${escapeHtml(safeText(e.title))}</div>
-              <div class="event-meta">${escapeHtml(safeText(e.endTime))}</div>
-            </div>
+          row.innerHTML = `<div><div style="font-weight:700;color:var(--text)">${escapeHtml(safeText(e.title))}</div><div class="event-meta">${escapeHtml(safeText(e.endTime))}</div></div>
             <div style="display:flex;gap:8px;align-items:center">
               <button class="small-btn" onclick="window.open('${link}','_blank')">Open Link</button>
               <button class="small-btn" onclick="copyToClipboard('${link}')">Copy</button>
@@ -336,44 +364,71 @@
             </div>`;
           eventsList.appendChild(row);
         });
-      }).catch(e=>{ console.error(e); alert('Failed to load events') });
+      } catch(err){
+        console.error(err);
+        alert('Failed to load events: ' + (err.message||err));
+      }
     }
 
-    function deleteEvent(id){
+    async function deleteEvent(id){
+      if(isPublic){ showToast('Action disabled in public view'); return; }
       if(!confirm('Delete this event?')) return;
-      db.ref('events/' + id).remove().then(()=>loadUserEvents()).catch(e=>alert(e.message));
+      try{
+        await db.ref('events/' + id).remove();
+        loadUserEvents();
+      } catch(err){
+        console.error(err);
+        alert('Failed to delete: ' + (err.message||err));
+      }
     }
 
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    /* ===== Public view loader & timer ===== */
-    function showPublicEvent(id){
+    // ===== Public loader & timer =====
+    async function showPublicEvent(id){
       if(!id) return;
-      db.ref('events/' + id).once('value').then(snap=>{
+      publicError.style.display = 'none';
+      publicLoading.style.display = '';
+      try{
+        const snap = await db.ref('events/' + id).once('value');
         const e = snap.val();
-        if(!e){ alert('Event not found'); return; }
+        publicLoading.style.display = 'none';
+        if(!e){
+          publicError.style.display = 'block';
+          publicError.textContent = 'رویدادی با این شناسه پیدا نشد.';
+          // keep admin UI disabled but show a minimal message
+          return;
+        }
 
-        // show UI
-        dashboardView.style.display = 'none';
-        publicView.style.display = 'block';
-
-        // set content
+        // Fill UI
         missionTitle.textContent = safeText(e.title || 'OPERATION');
         heroImg.src = e.photoURL || 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1400&auto=format&fit=crop';
         document.getElementById('publicMsg1').value = safeText(e.text1 || '');
         document.getElementById('publicMsg2').value = safeText(e.text2 || '');
         document.getElementById('publicMsg3').value = safeText(e.text3 || '');
+        ['publicMsg1','publicMsg2','publicMsg3'].forEach(i=>{ const el=document.getElementById(i); if(el) el.disabled = true; });
 
         const share = location.origin + location.pathname + '?id=' + id;
         shareUrlEl.textContent = share;
 
-        // timer
+        // Show public, hide dashboard
+        dashboardView.style.display = 'none';
+        publicView.style.display = 'block';
+
+        // Timer
         if(publicInterval) clearInterval(publicInterval);
         function updateTimer(){
           const end = new Date(e.endTime);
           const diff = end - new Date();
-          if(isNaN(end.getTime())){ daysEl.textContent='--'; hoursEl.textContent='--'; minutesEl.textContent='--'; secondsEl.textContent='--'; return; }
-          if(diff <= 0){ daysEl.textContent='00'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; clearInterval(publicInterval); return; }
+          if(isNaN(end.getTime())){
+            daysEl.textContent='--'; hoursEl.textContent='--'; minutesEl.textContent='--'; secondsEl.textContent='--';
+            return;
+          }
+          if(diff <= 0){
+            daysEl.textContent='00'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00';
+            clearInterval(publicInterval);
+            return;
+          }
           const d = Math.floor(diff / 86400000);
           const h = Math.floor((diff % 86400000) / 3600000);
           const m = Math.floor((diff % 3600000) / 60000);
@@ -385,25 +440,52 @@
         }
         updateTimer();
         publicInterval = setInterval(updateTimer, 1000);
-      }).catch(e=>{ console.error(e); alert('Error loading public event') });
+
+        // final safety: ensure admin UI disabled
+        hardDisableAdminUI();
+      } catch(err){
+        publicLoading.style.display = 'none';
+        publicError.style.display = 'block';
+        publicError.textContent = 'خطا در بارگذاری رویداد. دوباره تلاش کنید.';
+        console.error(err);
+      }
     }
 
     function copyShare(){ copyToClipboard(shareUrlEl.textContent || window.location.href); }
-    function openInApp(){ history.replaceState(null,'',location.pathname); publicView.style.display='none'; dashboardView.style.display='block'; if(auth.currentUser) loadUserEvents(); }
-
-    /* ===== Init ===== */
-    if(publicId){
-      // load public directly and don't force login
-      showPublicEvent(publicId);
-    } else {
-      // show dashboard by default; auth state will load events if logged in
-      dashboardView.style.display = 'block';
+    function openInApp(){
+      // remove id param and go to dashboard; admin UI remains disabled until user logs in
+      const url = new URL(location.href);
+      url.searchParams.delete('id');
+      history.replaceState(null,'', url.pathname + url.search);
+      // remove public-mode class so normal UI available
+      document.documentElement.classList.remove('public-mode');
+      window.__IS_PUBLIC = false;
+      // show dashboard
       publicView.style.display = 'none';
+      dashboardView.style.display = 'block';
+      // re-enable admin if logged in
       if(auth.currentUser) loadUserEvents();
     }
 
-    // small safeguard: if Firebase not reachable, show message in console
-    db.ref('.info/connected').once('value').catch(()=>console.warn('Firebase DB not reachable — check config/rules'));
+    // ===== Init =====
+    (function init(){
+      if(isPublic){
+        // lock admin immediately
+        hardDisableAdminUI();
+        // show public spinner while fetching
+        publicView.style.display = 'block';
+        dashboardView.style.display = 'none';
+        // load event
+        showPublicEvent(publicId);
+      } else {
+        // normal flow: show dashboard (admin)
+        dashboardView.style.display = 'block';
+        publicView.style.display = 'none';
+        if(auth.currentUser) loadUserEvents();
+      }
+      // optional: check firebase connectivity (soft)
+      db.ref('.info/connected').once('value').catch(()=>console.warn('Firebase not reachable — check config/rules'));
+    })();
   </script>
 </body>
 </html>
