@@ -1,133 +1,182 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Countdown App</title>
-
-<link rel="manifest" href="manifest.json">
+<title>Countdown SaaS</title>
 
 <style>
 body{
-    margin:0;
-    font-family:tahoma;
-    background:#0b1220;
-    color:white;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
+  margin:0;
+  font-family:tahoma;
+  background:#0b1220;
+  color:white;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
 }
 
 .card{
-    background:#111a2e;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  background:#111a2e;
+  padding:20px;
+  border-radius:15px;
+  margin:10px 0;
 }
 
-#timer{
-    font-size:60px;
-    margin:20px 0;
+input, button{
+  padding:10px;
+  margin:5px;
+  border-radius:10px;
 }
-
-button{
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    margin:5px;
-}
+a{color:#38bdf8}
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <h2>Countdown App</h2>
-    <div id="timer">--:--:--</div>
+<div class="container">
 
-    <button onclick="login()">Admin</button>
+<h2>⚡ Countdown SaaS</h2>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <h3>Login</h3>
+  <input id="email" placeholder="email">
+  <input id="password" type="password" placeholder="password">
+  <button onclick="login()">Login</button>
 </div>
 
-<div id="admin" style="display:none;margin-top:20px;">
-    <input type="datetime-local" id="time">
-    <button onclick="save()">Save</button>
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+
+  <h3>Create Event</h3>
+  <input id="title" placeholder="Event title">
+  <input id="time" type="datetime-local">
+  <button onclick="createEvent()">Create</button>
+
+  <h3>Your Events</h3>
+  <div id="list"></div>
+
 </div>
 
-<!-- Firebase -->
+<!-- PUBLIC VIEW -->
+<div id="public" style="display:none">
+  <h1 id="eventTitle"></h1>
+  <div style="font-size:60px" id="timer"></div>
+</div>
+
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
 
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB",
-  projectId: "YOUR_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "XXX",
-  appId: "XXX"
+  apiKey: "XXX",
+  authDomain: "XXX",
+  databaseURL: "XXX",
+  projectId: "XXX"
 };
 
 firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
 const db = firebase.database();
 
-const PASSWORD = "1234";
+let currentEvent = null;
 
-let endTime = null;
-
-db.ref("endTime").on("value", snap=>{
-    endTime = snap.val();
-});
-
-function update(){
-    if(!endTime){
-        document.getElementById("timer").innerHTML="No Time";
-        return;
-    }
-
-    const diff = new Date(endTime) - new Date();
-
-    if(diff <= 0){
-        document.getElementById("timer").innerHTML="DONE 🎉";
-        return;
-    }
-
-    const d = Math.floor(diff/86400000);
-    const h = Math.floor(diff%86400000/3600000);
-    const m = Math.floor(diff%3600000/60000);
-    const s = Math.floor(diff%60000/1000);
-
-    document.getElementById("timer").innerHTML =
-    `${d}d ${h}h ${m}m ${s}s`;
-}
-
-setInterval(update,1000);
-
+// LOGIN
 function login(){
-    let p = prompt("Password:");
-    if(p === PASSWORD){
-        document.getElementById("admin").style.display="block";
+  auth.signInWithEmailAndPassword(
+    email.value,
+    password.value
+  ).then(()=>{
+    showDashboard();
+  });
+}
+
+// CREATE EVENT
+function createEvent(){
+  const id = "ev_" + Date.now();
+
+  db.ref("events/" + id).set({
+    title: title.value,
+    endTime: time.value,
+    uid: auth.currentUser.uid
+  });
+
+  loadEvents();
+}
+
+// LOAD EVENTS
+function loadEvents(){
+  db.ref("events").on("value", snap=>{
+    const data = snap.val();
+    list.innerHTML = "";
+
+    for(let id in data){
+      const e = data[id];
+
+      if(e.uid === auth.currentUser.uid){
+        list.innerHTML += `
+          <div class="card">
+            <b>${e.title}</b><br>
+            <a href="?id=${id}">Open Link</a>
+          </div>
+        `;
+      }
     }
+  });
 }
 
-function save(){
-    let val = document.getElementById("time").value;
-    db.ref("endTime").set(val);
-    alert("Saved!");
+// DASHBOARD
+function showDashboard(){
+  loginBox.style.display="none";
+  dashboard.style.display="block";
+  loadEvents();
 }
 
-</script>
+// PUBLIC PAGE
+function loadPublic(id){
+  db.ref("events/"+id).once("value", snap=>{
+    const e = snap.val();
+    if(!e) return;
 
-<script>
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('service-worker.js');
+    currentEvent = e;
+
+    public.style.display="block";
+    eventTitle.innerText = e.title;
+
+    setInterval(()=>{
+      const diff = new Date(e.endTime) - new Date();
+
+      if(diff<=0){
+        timer.innerText="DONE 🎉";
+        return;
+      }
+
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor(diff%86400000/3600000);
+      const m = Math.floor(diff%3600000/60000);
+      const s = Math.floor(diff%60000/1000);
+
+      timer.innerText = `${d}d ${h}h ${m}m ${s}s`;
+
+    },1000);
+  });
 }
+
+// ROUTER
+const params = new URLSearchParams(location.search);
+if(params.get("id")){
+  loadPublic(params.get("id"));
+}
+
 </script>
 
 </body>
