@@ -9,539 +9,216 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* ===== Reset & Vars ===== */
+    *,*::before,*::after{box-sizing:border-box}
     :root{
-      --bg-1:#061007;
-      --bg-2:#0a1610;
+      --bg1:#061007;
+      --bg2:#08140b;
       --panel:#0e2316;
       --card:#0f2818;
       --muted:#98b77a;
       --accent:#9cc742;
       --accent-2:#7aa230;
       --glass: rgba(255,255,255,0.03);
-      --neon: rgba(156,199,66,0.12);
       --text:#e6f6e8;
+      --max-width:1200px;
+      --gap:18px;
     }
-    *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Inter, Tahoma, Arial,sans-serif;background:
-      radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, transparent 40%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="%23060a07"/><g opacity="0.06" fill="%2314180f"><circle cx="150" cy="150" r="120"/></g></svg>') , linear-gradient(180deg, var(--bg-1), var(--bg-2)); color:var(--text)}
-    .wrap{max-width:1200px;margin:18px auto;padding:18px}
+      radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, transparent 40%), linear-gradient(180deg,var(--bg1),var(--bg2)); color:var(--text); -webkit-font-smoothing:antialiased}
+
+    /* ===== Layout ===== */
+    .wrap{max-width:var(--max-width);margin:22px auto;padding:18px;}
     header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:58px;height:58px;border-radius:6px; background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      color:#05120a;font-weight:900;display:flex;align-items:center;justify-content:center;font-family:Orbitron, sans-serif; font-size:18px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.6);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .title{font-family:Orbitron, sans-serif; font-size:20px; letter-spacing:1px; color:var(--text)}
-    .top-actions{display:flex;gap:10px;align-items:center}
-    .btn-login{
-      background:transparent;border:1px solid rgba(156,199,66,0.12); color:var(--accent);
-      padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700;
-    }
+    .logo{width:56px;height:56px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:Orbitron;color:#04120a;font-weight:900}
+    .title{font-family:Orbitron, sans-serif;font-size:18px;letter-spacing:1px;}
+    .top-actions{display:flex;gap:10px}
+    .btn-login{background:transparent;border:1px solid rgba(156,199,66,0.12); color:var(--accent); padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
 
-    /* layout */
-    .main-grid{display:grid;grid-template-columns:260px 1fr; gap:18px;align-items:start}
-    @media (max-width:880px){ .main-grid{grid-template-columns:1fr; } .sidebar{order:2} .content{order:1} }
+    .main-grid{display:grid;grid-template-columns:260px 1fr;gap:var(--gap);align-items:start}
+    @media (max-width:920px){ .main-grid{grid-template-columns:1fr} }
 
-    /* sidebar */
-    .sidebar{background:linear-gradient(180deg,var(--panel), #071107); border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03)}
-    .nav{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    /* ===== Sidebar ===== */
+    .sidebar{background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.01));border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03)}
+    .nav{display:flex;flex-direction:column;gap:8px;margin-top:12px}
     .nav a{color:var(--muted); text-decoration:none; padding:10px;border-radius:8px; display:flex;align-items:center; gap:10px}
     .nav a.active{background:rgba(156,199,66,0.05); color:var(--accent); font-weight:700; border-left:3px solid var(--accent)}
-    .status-card{background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(255,255,255,0.01)); padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02); margin-top:14px}
-    .status-row{display:flex;align-items:center;gap:8px}
+    .status-card{background:transparent;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02); margin-top:12px}
     .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)}
 
-    /* radar */
-    .radar{margin-top:16px;background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.01)); border-radius:8px; padding:12px; text-align:center; border:1px solid rgba(255,255,255,0.02)}
-    .radar-wrap{position:relative;width:200px;height:200px;margin:auto}
+    .radar{margin-top:12px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);text-align:center}
+    .radar-wrap{position:relative;width:200px;height:200px;margin:8px auto}
     .radar-circle{position:absolute;inset:0;border-radius:50%;background:
-       radial-gradient(circle at center, rgba(156,199,66,0.02) 0%, transparent 30%),
-       conic-gradient(rgba(156,199,66,0.02) 0 1deg, transparent 1deg 360deg); border:1px solid rgba(156,199,66,0.06)}
+      radial-gradient(circle at center, rgba(156,199,66,0.02) 0%, transparent 40%),
+      repeating-radial-gradient(circle at center, rgba(156,199,66,0.01) 0 25px, transparent 25px 50px)}
     .radar-sweep{position:absolute;left:50%;top:50%;width:120%;height:2px;background:linear-gradient(90deg, transparent, rgba(156,199,66,0.85), transparent); transform-origin:left center; animation:spin 4s linear infinite}
     @keyframes spin{from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-    /* content */
-    .content{border-radius:12px;padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06)); border:1px solid rgba(255,255,255,0.02)}
-    .mission-title{text-align:center; font-family:Orbitron, sans-serif; font-size:36px; letter-spacing:2px; color:var(--accent); margin:4px 0 10px}
-    .mission-sub{ text-align:center; color:var(--muted); font-size:12px; margin-bottom:8px}
+    .login-card{margin-top:12px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04))}
+    .login-card input{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);margin-top:8px}
+    .login-card .btn{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#04120a;font-weight:800;cursor:pointer}
 
-    /* timer block */
-    .timer-card{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.08)); padding:18px; border-radius:12px; display:flex; justify-content:center; align-items:center; gap:12px; border:1px solid rgba(156,199,66,0.06)}
-    .time-segment{background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.02)); padding:12px 18px; border-radius:8px; min-width:110px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-    .time-num{font-family:Orbitron, sans-serif; font-size:34px; color:var(--accent); text-shadow:0 4px 18px rgba(156,199,66,0.14); letter-spacing:2px}
-    .time-label{font-size:11px;color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:1px}
+    /* ===== Content ===== */
+    .content{border-radius:12px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06));border:1px solid rgba(255,255,255,0.02)}
+    .mission-sub{ text-align:center;color:var(--muted);font-size:12px;margin-bottom:6px}
+    .mission-title{ text-align:center;font-family:Orbitron;font-size:34px;color:var(--accent);margin:0}
 
-    /* hero image */
-    .hero{margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.02); background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04)); box-shadow:inset 0 0 60px rgba(0,0,0,0.6)}
-    .hero img{width:100%;height:380px;object-fit:cover;display:block;filter:contrast(0.95) saturate(0.85)}
-بله — می‌تونم این طرح رو درست کنم. من یک قالب تک‌فایل    @media (max-width:680px){ .hero img (HTML/CSS/JS) آماده کردم که دقیقاً ظاهر نظامی/سبزِ تصویر رو شبیه‌سازی می‌کنه: هِدر بزرگ «OPERATION ALPHA»، تایمر دیجیتال بزرگ با{height:240px} جلوه‌ی سبز نئون، جای عکس بزرگ، سه جای متن/پیام، سایدبار داشبورد با فرم ایجاد رویداد و پنل لاگین. این نسخه استاتیک است و می‌تونی به }
+    .timer-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .time-seg{min-width:92px;background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.02));padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(156,199,66,0.06)}
+    .time-num{font-family:Orbitron;font-size:34px;color:var(--accent);letter-spacing:1px}
+    .time-label{font-size:11px;color:var(--muted);margin-top:6px;text-transform:uppercase}
 
-    /* message boxes */
-   ‌راحتی آن را به Firebase یا بک‌اند خودت متصل کنی (راهنمای کوچک هم پایین گذاشتم).
+    .hero{margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.02);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04))}
+    .hero img{width:100%;height:360px;object-fit:cover;display:block}
+    @media (max-width:680px){ .hero img{height:220px} }
 
-چه کار کردم (خلاصه):
-- طراحی نظامی/نئونی با پالت سبز، با فونت دیجیتال برای تایمر.
-- بخش public که با پارامتر ?id= در URL مستقیم نمایش تایمر می‌دهد.
-- جای عکس بزرگ، 3 پیام (editable برای ادمین)، دکمهٔ لاگین در بالا/پایین.
-- قسمت داشبورد پایین صفحه (سمت چپ سایدبار، وسط فرم ایجاد، راست لاگین).
-- JS ساده برای بارگذاری رویداد نمونه یا گرفتن id از URL و اجرای تایمر.
+    .messages{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+    .msg{display:flex;gap:12px;padding:12px;border-radius:10px;border:1px solid rgba(156,199,66,0.06);background:rgba(0,0,0,0.12);align-items:center}
+    .msg .icon{width:44px;height:44;border-radius:8px;background:linear-gradient(180deg, rgba(156,199,66,0.06), rgba(0,0,0,0.02));display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:Orbitron}
+    .msg .body .title{font-weight:700;color:var(--muted);font-size:13px}
+    .msg .body input{width:100%;margin-top:6px;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text)}
 
-در ادامه فایل کامل (یک فایل HTML). کافی است فایل را در ریشه سایت/Pages قرار دهی (index.html) یا در repo قرار بدهی و Deploy کنی.
+    .actions-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+    .green-btn{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#04120a;padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:800}
+    .small-btn{padding:8px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer}
 
-```html name=countdown-military.html
-<!doctype html>
-<html lang="fa">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Operation Alpha — Countdown</title>
-
-  <!-- فونت‌ها -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg-dark:#050a06;
- .messages{display:flex;      --panel:#0f2413;
-      --panel-2:#122813;
-      --accent:#9bbf52;
-      --accentflex-direction:column;gap:12px;margin-top:14px}
-    .msg{border-dark:#7aa23a;
-      --muted:#75976a;
-      ---radius:8px;padding:12px;background:rgba(0,0,0,0.glass: rgba(255,255,255,0.03);
-      --card-border: rgba(155,191,82,0.08);
-      --text:#e6f3df;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:
-      radial-gradient(ellipse at top left, rgba(11,14);border:1px solid rgba(156,199,66,0.06); color:var(--text); display:flex;gap:12px22,10,0.35), transparent 20%),
-      linear-gradient(180deg,#04120a 0%, #08140a 100%); color:var(--text);
-      font-family:Inter, Tahoma, sans-serif; -webkit-font-smoothing:antialiased}
-
-    .wrap{max-width:1200px;margin:20px auto;padding:20px}
-
-    /* header */
-    header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .brand;align-items:center}
-    .msg .icon{width:44px;height:44;border-radius:8px;background:linear-gradient(180deg, rgba(156,199,66,0.06), rgba(0,0,0,0.02)); display:flex;align-items:center;justify-content:center;color:var(--accent); font-family:Orbitron, sans-serif}
-    .msg .body{flex:1}
-    .msg .body .title{font-weight:700;color:var(--muted); font-size:13px}
-    .msg .body input{width:100%;margin-top:6px;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:56px;height:56px.03);background:transparent;color:var(--text)}
-
-    /* footer small */
+    /* Dashboard lower */
+    .dash-grid{display:flex;gap:16px;margin-top:16px}
+    .form{flex:1;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,255,255,0.02)}
+    .events{width:360px;max-width:100%;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,255,255,0.02)}
+    .form label{display:block;color:var(--muted);font-size:13px;margin-top:8px}
+    .form input, .form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);margin-top:6px}
+    .event-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.06);margin-top:8px;border:1px solid rgba(255,255,255,0.02)}
+    .event-meta{font-size:13px;color:var(--muted)}
     .powered{font-size:11px;color:var(--muted);text-align:right;margin-top:10px}
-
-    /* dashboard lower */
-    .dash-row{display:flex;gap:18px;margin-top:12px;align-items:flex-start}
-    .form{flex:1;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0;border-radius:6px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-dark,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,255,255,0.02)}
-    .events{width:380px; max-width:100%; padding:14px;border-radius:));
-      display:flex;align-items:center;justify-content:center;font-weight:900;color:#07120a;
-      box-shadow:0 6px 18px rgba(0,0,0,0.6)
-    }
-    h1{margin:0;font-size:20px;letter-spacing:1px}
-    .top-actions{display:flex;gap:10px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));border:1px solid rgba(255,2558px;align-items:center}
-    .btn{background:var(--accent);border:none;padding:8px ,255,0.02)}
-    .form label{display:block;color:var(--muted);font-size:1312px;border-radius:8px;cursor:pointer;font-weight:700;colorpx;margin-top:8px}
-    .form input, .form textarea{width:100%;padding:10px:#07120a}
-    .;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);margin-top:6px}
-    .form .actions{margin-top:10px;display:flex;gap:8btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-
-    /* main grid */
-    .main-grid{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18pxpx}
-    .green-btn{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#04120a;padding:10px 12px;border-radius:8}
-    @media (max-width:900px){ .main-grid{grid-template-columns:1frpx;border:none;cursor:pointer;font-weight:800}
-
-    .event-item{display:flex;justify-content:space-between;align-items:center;padding:10px} }
-
-    /* left column (radar / map / motto) */
-    .left-col{display:flex;flex-direction:column;gap:14px}
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,;border-radius:8px;background:rgba(0,0,0,0.06);margin-top:8px;border:0.06));
-           border:1px solid var(--card-border); padding:14px;border-radius:12px}
-    .small-box{height:160px;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center}
-    .map{width:100%;height:140px;background:
-      url('data:image/svg+xml;utf8,<svg xmlns="1px solid rgba(255,255,255,0.02)}
-    .event-meta{font-size:13px;color:http://www.w3.org/2000/svg" width="400" height="200"><rectvar(--muted)}
-    .small-btn{padding:6px 8px;border-radius width="100%" height="100%" fill="%23021409"/><text x="50%" y="50%":6px;border:none;background:rgba(255,255,255,0.03);color:var(--muted); fill="%236b9b40" font-size="16" text-anchor="middle">MAP</text></svg>') center/cover no-repeat;border-radius:8px;opacity:0.95}
-    .radar{width:100%;height:140px;border-radius:8px;position:relative;overflow:hidden;background:radialcursor:pointer}
-
-    /* login card sidebar */
-    .login-card{margin-top:12px;padding:12-gradient(circle at 20% 30%, rgbapx;border-radius:8px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05(155,191,82,0.06), transparent 20%);display:flex;align-items:center;justify-content:center}
-    .radar::after{content:'';position:absolute;inset:0;background:
-      radial-gradient(circle at 50%)); border:1px solid rgba(255,255,255 50%, rgba(155,191,82,0.04), transparent 30%), linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08,0.02)}
-    .login-card input{width:100%;padding:8px;border) 100%);mix-blend-mode:overlay}
-    .moto{padding:14px;text-align:center;font-weight-radius:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color::700;color:var(--muted);border-radius:8px}
-
-    /* center column */
-    .center-col{display:flex;flex-directionvar(--text);margin-top:8px}
-    .login-card .btn{width:100:column;gap:14px}
-    .mission-title{display:flex;flex-direction:column;align-items:center;gap:6px}
-    .mission-sub{color:var(--muted);font-size:13px;letter-spacing:1px}
-    .mission-name{font-family: 'Orbitron',%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#06120a;font-weight:800;cursor:pointer}
-  </style>
-</head>
-<body>
- sans-serif;font-size:46px;letter-spacing:4px;color:rgba(155,191,82,0.95);text  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo">CD</-shadow:0 6px 18px rgba(0,0,0,0.6)}
-    /* timer box */
-    .timer-wrap{margin-top:6px;background:linear-gradient(div>
-        <div>
-          <div class="title">COUNTDOWN SAAS</div180deg, rgba(0,0>
-          <div style="font-size:12px;color:var(--muted)">Mission Objective</div>
-        </div,0,0.18), rgba(0,0,0,0.28));padding:18px;border-radius:12px;border:1px solid rgba(155,191,82,0.06);display:flex;>
-      </div>
-      <div class="top-actions">
-        <button id="loginTopjustify-content:center}
-    .timer{display:flex;gap:18px;align-items:center}
-    .time-seg{" class="btn-login" onclick="showLoginTop()">Login</button>
-      </div>
-    </header>
-
-    <div class="main-grid">
-background:linear-gradient(180deg, rgba(10,25,10,0.9), rgba(20,40,20,      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <nav>
-          <div0.6));
-      padding:14px 18px;border-radius:10px;min-width:110px;text-align:center;box-shadow style="display:flex;justify-content:space-between;align-items:center">
-            <div style="color::0 6px 24px rgba(0,0,0,0.6);
-     var(--accent);font-weight:800">COUNTDOWN border:1px solid rgba(155,191,82,0.06)}
-    .time-value{font-family:'Orbitron',sans-serif;font-size:44px;color:var(--accent);text-shadow:0 2px 18px rgba( SAAS</div>
-            <div style="color:var155,191,82,0.25)}
-    .time-label{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:1px}
-
-    /* hero image */
-    .hero{border-radius:10px;overflow:hidden;border:1px solid rgba(155,191,82,0.04)}
-    .hero img(--muted);font-size:12px">v1</div>
-          </div>
-
-          <div class="nav" style="margin-top:12px">
-            <a href="#" class="active" onclick="showTab('dashboard')">Dashboard</a>
-            <a href="#" onclick="showTab('create')">Create Event</a>
-            <a href="#" onclick="showTab('myevents')">My Events</a>
-            <a href="#" onclick="logout()">Logout</{width:100%;height:340px;object-fit:cover;display:block}
-    @media (max-width:900px){ .hero img{height:220px} }
-
-    /* messages */
-    .messages{display:grid;a>
-          </div>
-        </nav>
-
-        <div class="status-card">
-          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">STATUS</div>
-         grid-template-columns:1fr;gap:10px;margin-top:10px}
-    .msg{padding:12px;border-radius:10px;border:1px solid rgba(155,191,82,0.06);background:rgba(0,0,0,0.18)}
-    .msg h4{margin:0;font-size:13px;color:var <div class="status-row"><div class="dot"></div><div style="color:(--accent)}
-    .msg p{margin:6px 0 0;color:var(--text);opacity:0.95}
-
-var(--text);font-weight:700">ACTIVE</div></div>
-          <div style="height:8px"></div    /* bottom dashboard area */
-    .dashboard{display:flex;gap:18px;margin-top:20px}
-    .dash-left{width:>
-          <div style="font-size:12px;color:var260px}
-    .dash-mid{flex:1}
-    .dash-right{width:260px}
-    .form-row{margin-bottom:8px}
-    input, textarea{background:rgba(0,0,0,0.16);border:1px solid rgba(255,(--muted)">LOCATION</div>
-          <div style="color:var(--muted);margin-top:6px">CLASSIFIED</div>
-        </div>
-
-        <div class="radar">
-          <255,255,0.03);padding:10px;border-radius:8px;color:var(--text);width:100div style="font-size:12px;color:var(--muted);margin-bottom:8px">RADAR</div>
-%}
-    textarea{min-height:80px;resize:vertical}
-    .event-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0          <div class="radar-wrap">
-            <div class="radar-circle"></div>
-            <div class="radar-sweep"></div>
-          </div>
-          <div style="font-size:12px;color:var(--muted);margin-top:8px">STAY FOCUSED — MISSION IS EVERYTHING</div>
-        </div>
-
-       .18);margin-bottom:8px}
-    .small-muted{color:var(--muted);font-size:13px}
-
-    footer{margin-top:20px;text-align:center;color:rgba(155,191,82,0.12);font-size:13px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo">CD</ <div class="login-card">
-          <div style="font-weight:div>
+        <div class="logo">CD</div>
         <div>
-          <h1>COUNTDOWN SAAS</h1>
-          <div class="small-muted">Mission control • Direct public link opens timer</div>
+          <div class="title">COUNTDOWN SAAS</div>
+          <div style="font-size:12px;color:var(--muted)">Mission Objective</div>
         </div>
       </div>
-
       <div class="top-actions">
-        <button id="copyPublic" class="btn ghost" title="ک800;color:var(--accentپی لینک عمومی">Copy Link</button>
-        <button id="loginToggle" class="btn">Login</button>
+        <button id="loginTopBtn" class="btn-login" onclick="onTopLogin()">Login</button>
       </div>
     </header>
 
     <div class="main-grid">
-      <!-- LEFT -->
-      <aside class="left-col">
-        <div class="panel small-box">
-          <div style="width:100%;display:flex;justify-content:space-between;align-items:center">
-            <div style="font);font-family:Orbitron">-size:12px;color:var(--muted)">STATUS: <strong style="color:var(--accent)">ACTIVE</strong></div>
-            <div style="ADMIN LOGIN</div>
-         font-size:12px;color:var(--muted)">LOCATION: <strong style="color:var(-- <input id="adminEmail" placeholder="Email">
-          <muted)">CLASSIFIED</strong></div>
-          </div>
-          <div class="map" style="margin-top:8px;border-radius:8px"></div>
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="color:var(--accent);font-weight:800">COUNTDOWN SAAS</div>
+          <div style="color:var(--muted);font-size:12px">v1</div>
         </div>
 
-        <div class="panel radar">
-          <!-- simple animatedinput id="adminPass" type="password" placeholder="Password">
-          <button class="btn radar -->
-          <canvas id="radarCanvas" width="220" height="140" style="width:100%;height:100%"></canvas>
+        <nav class="nav">
+          <a href="#" id="navDashboard" class="active" onclick="showPanel('dashboard')">Dashboard</a>
+          <a href="#" id="navCreate" onclick="showPanel('create')">Create Event</a>
+          <a href="#" id="navMy" onclick="showPanel('myevents')">My Events</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </nav>
+
+        <div class="status-card">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">STATUS</div>
+          <div style="display:flex;gap:8px;align-items:center"><div class="dot"></div><div style="font-weight:700">ACTIVE</div></div>
+          <div style="height:8px"></div>
+          <div style="font-size:12px;color:var(--muted)">LOCATION</div>
+          <div style="color:var(--muted);margin-top:6px">CLASSIFIED</div>
         </div>
 
-        <div class="" onclick="loginUser()">Login</button>
+        <div class="radar">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">RADAR</div>
+          <div class="radar-wrap"><div class="radar-circle"></div><div class="radar-sweep"></div></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px">STAY FOCUSED — MISSION IS EVERYTHING</div>
+        </div>
+
+        <div class="login-card" id="loginCard">
+          <div style="font-weight:800;color:var(--accent);font-family:Orbitron">ADMIN LOGIN</div>
+          <input id="adminEmail" placeholder="Email">
+          <input id="adminPass" type="password" placeholder="Password">
+          <button class="btn" onclick="loginUser()">Login</button>
         </div>
       </aside>
 
       <!-- CONTENT -->
       <main class="content">
-        <div id="publicView" style="panel moto">
-          <div style="font-weight:800;color:var(--accent)">STAY FOCUSED</div>
-          <div style="color:var(--muted);font-size:13px">MISSION IS EVERYTHING</divdisplay:none">
+        <!-- PUBLIC VIEW -->
+        <section id="publicView" style="display:none">
           <div class="mission-sub">MISSION OBJECTIVE</div>
-          <div class="mission-title" id>
-        </div>
-      </aside>
+          <h2 class="mission-title" id="missionTitle">OPERATION ALPHA</h2>
 
-      <!-- CENTER -->
-      <main class="center-col">
-        <div class="panel="missionName">OPERATION ALPHA</div>
-
-          <div class="timer-card" style="margin-top:8px" aria-hidden="false">
-            <div class="time-se mission-title">
-          <div class="mission-sub">★ MISSION OBJECTIVE ★</div>
-          <div class="mission-name" id="missionName">OPERATION ALPHA</div>
-
-          <div class="timer-wrap" style="width:100%;">
-gment">
-              <div class="time-num" id="days">00</div>
-              <            <div class="timer" id="timerBox">
-              <div class="time-seg">
-                <div class="timediv class="time-label">DAYS</div>
-            </-value" id="daysdiv>
-            <div style="font-size:34px;color:var(--accent);font-family:Orbitron">:</div>
-            <div class="time-segment">
-              <div class="time-num" id="hours">00</div>
-              <div class="time-label">HOURS</div>
-            </div>
-            <div style="font-size:34">00</div>
-                <div class="time-label">DAYS</div>
-              </px;color:var(--accent);font-family:Orbitron">:</div>
-            <div class="time-segment">
-              <div class="time-num" id="minutes">00</div>
-              <div class="time-label">MINUTES</div>
-            </div>
-            <div style="font-size:34px;color:var(--accent);font-family:Orbitron">:</div>
-            <div class="time-segment">
-              <div class="time-num" id="seconds">00</div>
-              <div class="time-labeldiv>
-              <div class">SECONDS</div>
-            </div>
+          <div class="timer-row" role="timer" aria-live="polite">
+            <div class="time-seg"><div class="time-num" id="days">00</div><div class="time-label">DAYS</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="hours">00</div><div class="time-label">HOURS</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="minutes">00</div><div class="time-label">MINUTES</div></div>
+            <div style="font-family:Orbitron;color:var(--accent);font-size:34px">:</div>
+            <div class="time-seg"><div class="time-num" id="seconds">00</div><div class="time-label">SECONDS</div></div>
           </div>
 
-          <div class="hero" id="="time-seg">
-                <heroBox">
-            <img id="heroImg" src="" alt="mission photo">
-          </div>
+          <div class="hero" id="heroBox"><img id="heroImg" src="" alt="mission photo"></div>
 
           <div class="messages">
-            <div class="msg">
-              <div class="icon">★</div>
-              <div class="body">
-                <div class="title">MESSAGE 1</div>
-                <input id="msg1" placeholder="Enter first message...">
-              </div>
-            </div>
-
-            <div class="msg">
-              <div class="icondiv class="time-value"">✚</div>
-              <div class="body">
-                <div class="title">MESSAGE 2</div>
-                <input id="msg2" placeholder="Enter second message...">
-              </div>
-            </div>
-
-            <div class="msg">
-              <div class="icon">⚑</div>
-              <div class="body">
-                <div class="title">MESSAGE 3</div>
-                id="hours">00</div <input id="msg3" placeholder="Enter third message...>
-                <div class="time-label">HOURS</div>
-              </div>
-              <div class="time-seg">
-                <div class="time-value" id="minutes">00</div>
-                <div class="time-label">MINUTES</div>
-              </div>
-              <div class="time-seg">
-                <">
-              </div>
-            </div>
+            <div class="msg"><div class="icon">★</div><div class="body"><div class="title">MESSAGE 1</div><input id="publicMsg1" placeholder="Enter first message..."></div></div>
+            <div class="msg"><div class="icon">✚</div><div class="body"><div class="title">MESSAGE 2</div><input id="publicMsg2" placeholder="Enter second message..."></div></div>
+            <div class="msg"><div class="icon">⚑</div><div class="body"><div class="title">MESSAGE 3</div><input id="publicMsg3" placeholder="Enter third message..."></div></div>
           </div>
 
-div class="time-value" id          <div style="display="seconds">00</div:flex;justify-content:space-between;align-items:center;margin-top>
-                <div class="time:12px">
-            <div-label">SECONDS</div>
- style="color:var(--muted);font-size:12px">Share link: <span id="shareLink" style="color:var(--accent              </div>
-            </div);font-family:Orbitron"></>
+          <div class="actions-row">
+            <div style="color:var(--muted);font-size:12px">Share: <span id="shareUrl" style="color:var(--accent);font-family:Orbitron"></span></div>
+            <div style="display:flex;gap:8px"><button class="green-btn" onclick="openInApp()">Open in App</button><button class="small-btn" onclick="copyShare()">Copy Link</button></div>
           </div>
-        </div>
+        </section>
 
-        <div class="panel hero">
-          <img id="heroImg" src="https://images.unsplash.com/photo-160590271162span></div>
-            <div2-cfb43c44367e?q=80&w=1600&auto=format&fit=crop&s=placeholder" alt="hero">
-        </div>
-
-        <div class="messages">
-          <div class="msg">
->
-              <button class="green-btn" onclick="openInApp()">Open in App</button>
-                         <h4>MESSAGE 1</h4>
-            <p id="msg1">Enter first message here...</p>
- <button class="small-btn" onclick="copyShare()">Copy Link</button>
-            </div>
-          </div>
-
-          <div class="powered">Powered by Countdown Saa          </div>
-          <div class="msg">
-            <h4>MESSAGE 2</h4>
-            <p id="msg2">Enter second message here...</p>
-          </div>
-          <div class="msg">
-            <h4>MESSAGE 3</h4>
-            <S</div>
-        </div>
-
-        <!-- DASHBOARD / CREATE / MY EVENTS -->
-        <div id="dashboardView">
+        <!-- DASHBOARD (create + list) -->
+        <section id="dashboardView">
           <div style="display:flex;justify-content:space-between;align-items:center">
-p id="msg3">Enter third message here...</p>
-          </div>
-        </div>
-                 <div style="font-size:18px;color:var(--accent </main>
-    </div>
-
-    <!-- dashboard area -->
-    <div class="dashboard">
-      <div);font-family:Orbitron">Create New Event</div>
+            <div style="font-size:18px;color:var(--accent);font-family:Orbitron">Create New Event</div>
           </div>
 
-          <div class="dash-row">
+          <div class="dash-grid">
             <div class="form" id="createForm">
-              <label>Event Title</label>
- class="dash-left panel">
-        <h3 style="margin-top:0">Dashboard</h3>
-        <div class="small-muted">Quick nav</div>
-        <ul style="padding-left:18px;margin-top:8px;color:var(--muted)">
-          <li>Dashboard</li>
-          <li>Create Event</              <input id="title" placeholder="Operation Alpha">
-
-              <label>Select Date & Time</label>
-              <input id="time" type="datetime-local">
-
-              <label>Image URL</label>
-              <li>
-          <li>My Events</li>
-        </ul>
-      </div>
-
-      <div class="dash-mid panel">
-        <h3 style="margin-top:0">Create New Event</h3>
-        <div class="form-row">
-          <label class="smallinput id="photoUrl" placeholder="https://...">
-
-              <label>Message 1</-muted">Event Title</label>
-          <input id="evTitle" type="text" placeholder="Operation Alpha">
-        </div>
-        <div class="form-row">
-          <label class="small-muted">Select Date & Time</label>
-label>
-              <input id          <input id="evTime" type="datetime-local">
-        </div>
-        <div class="form-row">
-          <label class="small-muted">Photo URL</label>
-          <input id="evPhoto" type="url" placeholder="https://...">
-        </div>
-        <div class="form-row">
-          <label="txt1" placeholder="First message">
-
-              <label>Message 2</label>
-              class="small-muted">Message 1</label>
-          < <input id="txt2"input id="evMsg1 placeholder="Second message">
-
-             " type="text" placeholder=" <label>Message 3</label>
-              <input id="txt3" placeholder="Third message">
-
-              <div class="actions">
-                <button class="green-btn" onclick="Enter first message">
-        </createNewEvent()">Create Event</button>
+              <label>Event Title</label><input id="title" placeholder="Operation Alpha">
+              <label>Select Date & Time</label><input id="time" type="datetime-local">
+              <label>Image URL</label><input id="photoUrl" placeholder="https://...">
+              <label>Message 1</label><input id="txt1" placeholder="First message">
+              <label>Message 2</label><input id="txt2" placeholder="Second message">
+              <label>Message 3</label><input id="txt3" placeholder="Third message">
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <button class="green-btn" onclick="createNewEvent()">Create Event</button>
                 <button class="small-btn" onclick="clearCreate()">Clear</button>
               </div>
             </div>
 
             <div class="events" id="myEvents">
               <div style="font-weight:800;color:var(--muted)">My Events</div>
-              <div id="div>
-        <div class="list"></div>
+              <div id="eventsList"></div>
             </div>
           </div>
+        </section>
 
-        </div>
-
+        <div class="powered">Powered by Countdown SaaS</div>
       </main>
-form-row">
-          <label class="small-muted">Message 2</label>
-          <input id="evMsg2" type="text" placeholder="Enter second message">
-        </div    </div>
+    </div>
   </div>
 
   <!-- Firebase -->
- >
-        <div class="form-row">
-          <label class="small-muted">Message  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app3</label>
-          <input id="evMsg3" type="text" placeholder="Enter third message">
-        </div>
-
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button id="createBtn" class="btn">Create Event</button>
-          <-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
- button id="previewBtn" class="btn ghost">Preview</button>
-        </div>
-
-        <h3 style <script src="https://www.gstatic.com/firebasejs/10="margin-top:18px">My Events</h3>
-        <div id="eventsList">
-          <!-- populated by JS -->
-        </div>
-      </div>
-
-      <.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
   <script>
-    // ====== Firebase Config (جایگزین یا بررسی شود) ======
-    const firebaseConfig =aside class="dash-right panel">
-        <h3 style="margin-top:0">ADMIN LOGIN</h3>
-        <label class="small-muted">Email</label>
-        <input id="adminEmail" type="email" placeholder {
+    /* ===== Firebase config -  ===== */
+    const firebaseConfig = {
       apiKey: "AIzaSyA7SH4jNcMnnNi_zH8q-JVjSsS2zQ912yk",
-      authDomain: "countdown-6308f.firebaseapp.com">
-        <label class="small-muted">6308f.firebaseapp.com",
+      authDomain: "countdown-6308f.firebaseapp.com",
       databaseURL: "https://countdown-6308f-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "countdown-6308f",
       storageBucket: "countdown-6308f.firebasestorage.app",
@@ -552,230 +229,181 @@ form-row">
     const auth = firebase.auth();
     const db = firebase.database();
 
-    // DOM refs
+    /* ===== DOM refs ===== */
     const params = new URLSearchParams(location.search);
-    const publicId = params.get("id");
-    const publicView = document.getElementById("publicView");
-    const dashboardViewPassword</label>
-        <input = document.getElementById("dashboardView");
-    const missionName = document.getElementById("missionName");
-    const heroImg = document.getElementById("heroImg");
-    const shareLink = document.getElementById("shareLink");
-    const listEl = document.getElementById("list");
+    const publicId = params.get('id');
 
-    // Timer elems
-    const elDays = document.getElementById("days");
-    const elHours = document.getElementById("hours");
-    const elMinutes = document.getElementById("minutes");
-    const elSeconds = document.getElementById("seconds");
+    const publicView = document.getElementById('publicView');
+    const dashboardView = document.getElementById('dashboardView');
 
-    // init
+    const missionTitle = document.getElementById('missionTitle');
+    const heroImg = document.getElementById('heroImg');
+
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    const shareUrlEl = document.getElementById('shareUrl');
+
+    const eventsList = document.getElementById('eventsList');
+
     let publicInterval = null;
 
-    // If public id present, load public view directly and do not force login
-    id="adminPass" type if(publicId){
-      showPublic(publicId);
-    } else {
-      // show dashboard by default; onAuthStateChanged will handle
-      dashboardView.style.display = "block";
+    /* ===== Helpers ===== */
+    function pad(n){ return n<10? '0'+n : String(n); }
+    function safeText(s){ return (s===null||s===undefined)? '' : String(s); }
+    function copyToClipboard(text){
+      if(!navigator.clipboard) { prompt('Copy this link:', text); return; }
+      navigator.clipboard.writeText(text).then(()=>alert('Link copied')).catch(()=>prompt('Copy this link:', text));
     }
 
-="password" placeholder="••••    // Auth handling
+    /* ===== UI logic ===== */
+    function showPanel(name){
+      // simple nav handler to keep code clear (only dashboardView used)
+      // if future: implement panel switching
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function onTopLogin(){
+      document.getElementById('loginCard').scrollIntoView({behavior:'smooth'});
+    }
+
+    /* ===== Auth ===== */
     auth.onAuthStateChanged(user=>{
-      if(publicId) return; // if viewing public, do not switch
-      if(user){
-        dashboardView.style.display = "block";
-        loadEvents();
-      } else {
-        dashboardView.style.display = "block"; // still allow create view but actions require login
+      // if viewing public event, don't interfere
+      if(publicId){
+        return;
       }
+      // show dashboard always; creating events requires login
+      dashboardView.style.display = 'block';
+      publicView.style.display = 'none';
+      if(user) loadUserEvents();
     });
 
-    // UI helpers
-    function showTab(t){
-      // simple nav (could expand)
-      if(t === 'dashboard' || t==='create' || t==='myevents'){
-        dashboardView••">
-        <div style.style.display = "block";
-      }
-    }
-    function showLoginTop(){ document="margin-top:10px">
-.querySelector('.login-card').scrollIntoView({behavior:'smooth'}); }
-
-    // Login (admin)
     function loginUser(){
-      const email = document.getElementById('adminEmail          <button id="adminLogin" class="btn">Login').value;
+      const email = document.getElementById('adminEmail').value.trim();
       const pass = document.getElementById('adminPass').value;
-      if(!email||!pass){ alert('ایمیل و رمز را وارد کنید'); return; }
-      auth.signInWithEmailAndPassword(email, pass).then(()=>{ alert('ورود موفق'); loadEvents(); }).catch(e=>{ alert(e.message) });
+      if(!email||!pass){ alert('Email and password required'); return; }
+      auth.signInWithEmailAndPassword(email, pass).then(()=>{ alert('Logged in'); loadUserEvents(); }).catch(e=>alert(e.message));
     }
-    function</button>
-        </div>
-        <div style="margin-top:12px;color:var(--muted);font-size:13px">Access your dashboard</div>
-      </aside>
-    </div>
+    function logout(){ auth.signOut().then(()=>{ alert('Logged out'); eventsList.innerHTML=''; }); }
 
-    < logout(){ auth.signOut().then(()=>{ alert('خروج انجام شد'); listEl.innerHTML=''; }); }
-
-    // Create event
+    /* ===== Create / Load / Delete events ===== */
     function createNewEvent(){
       const user = auth.currentUser;
-      if(!userfooter>© 2026 Countdown SaaS</footer>
-  </div>
-
-  <script>
-    // ======= simple demo data + load by ?id=  =======
-    const sampleEvents = {
-      "){ alert('برای ایجاد رویداد وارد شوید'); return; }
+      if(!user){ alert('Please login as admin to create events'); return; }
 
       const title = document.getElementById('title').value.trim();
-      const time = document.getElementById('time').value;
-      const photo = document.getElementById('photoUrl').value.trim();
-      const t1 = document.getElementById('txt1').value.trim();
-      const t2 = document.getElementById('txt2').value.trim();
-      const t3 = document.getElementById('txt3').value.trim();
+      const endTime = document.getElementById('time').value;
+      const photoURL = document.getElementById('photoUrl').value.trim();
+      const text1 = document.getElementById('txt1').value.trim();
+      const text2 = document.getElementById('txt2').value.trim();
+      const text3 = document.getElementById('txt3').value.trim();
 
-      if(!title||!time){ev_1": {
-        title: "OPERATION ALPHA",
-        endTime: "2026-12-31T alert('عنوان و زمان را وارد کنید'); return; }
+      if(!title || !endTime){ alert('Title and date/time are required'); return; }
 
-      const id = 'ev_' +23:59:59",
-        photoURL: "https://mega.nz/file/fd9EDDwK#SCM8M2u1hm4Zjm1gXYV3t78yP7wtNXI_BoiBfpLi9wY;
-      db.refd910aaa4?q=80&w=1600&auto=format&fit=crop&s=placeholder",
-        msg1:('events/' + id).set "Phase one: insertion",
-        msg2: "Phase two: secure LZ",
-        msg3: "Phase three: extraction"
-      },
-      "ev_2": {
-        title: "MISSION BRAVO",
-        endTime: "2026-({
-        title, endTime08-15T12:00:00",
-        photoURL: "",
-        msg1: "Briefing at 0900",
-        msg2: "Ensure comms",
-        msg3: "Standby"
-      }
-    };
-
-    // read id param
-    const params = new URLSearchParams(location.search);
-    const id = params.get('id: time, photoURL: photo') || 'ev_1';
-    let currentEvent = sampleEvents[id] || sampleEvents['ev_1'];
-
-    // render initial
-||'', text1:t1    function renderEvent(e){
-      document.getElementById(', text2:t2, text3:t3, uid: user.uid
-      }).then(()=>missionName').innerText = e{ alert('رویداد.title || 'UNTITLED';
-      document.getElementById('heroImg').src = e.photoURL || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="600"><rect width=" ساخته شد'); clearCreate(); loadEvents(); }).catch(e=>alert(e.message));
+      const id = 'ev_' + Date.now();
+      db.ref('events/' + id).set({
+        title, endTime, photoURL, text1, text2, text3, uid: user.uid
+      }).then(()=>{ alert('Event created'); clearCreate(); loadUserEvents(); }).catch(e=>alert(e.message));
     }
+
     function clearCreate(){
-      ['title','time','photoUrl','txt1','txt2','txt3'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+      ['title','time','photoUrl','txt1','txt2','txt3'].forEach(i=>{ const el=document.getElementById(i); if(el) el.value=''; });
     }
 
-100%" height="100%" fill    // Load user's events
-    function loadEvents(){
+    function loadUserEvents(){
       const user = auth.currentUser;
-      db.ref('events').once('value').then(snap=>{
-        const data = snap.val()||{};
-        listEl.innerHTML = '';
-        for(let id in data){
+      if(!user) return;
+      db.ref('events').orderByChild('uid').equalTo(user.uid).once('value').then(snap=>{
+        const data = snap.val() || {};
+        eventsList.innerHTML = '';
+        const ids = Object.keys(data);
+        if(!ids.length){ eventsList.innerHTML = '<div style="color:var(--muted);margin-top:8px">No events yet</div>'; return; }
+        ids.reverse().forEach(id=>{
           const e = data[id];
-          if="%23051409"/><(user && e.uid === user.uid){
-            const row = document.createElement('div');
-            row.className = 'event-itemtext x="50%" y="';
-            const link = location.origin + location.pathname + '?id=' + id;
-            row.innerHTML = `<div>
-              <div style="font-weight:700;color:var(--text)">${escapeHtml(e.title)}</50%" fill="%236b9b40" font-size="div>
-              <div class="event-meta">${escapeHtml(e.endTime)}</div>
+          const row = document.createElement('div'); row.className = 'event-item';
+          const link = location.origin + location.pathname + '?id=' + id;
+          row.innerHTML = `<div>
+              <div style="font-weight:700;color:var(--text)">${escapeHtml(safeText(e.title))}</div>
+              <div class="event-meta">${escapeHtml(safeText(e.endTime))}</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
-              <button class="small-btn36" text-anchor="middle">No Image</text></svg>';
-      document.getElementBy" onclick="openPublic('${id}')">Open Link</button>
-              <button class="small-btn" onclick="copyToId('msg1').innerText = e.msg1 || '';
-Clipboard('${link}')">Copy</button>
+              <button class="small-btn" onclick="window.open('${link}','_blank')">Open Link</button>
+              <button class="small-btn" onclick="copyToClipboard('${link}')">Copy</button>
               <button class="small-btn" onclick="deleteEvent('${id}')">Delete</button>
             </div>`;
-            listEl.appendChild(row);
-          }
-        }
-        if(!listEl.firstChild) listEl.innerHTML = '<div style="color:var(--muted);margin-top:8px">No events yet</div>';
-      });
+          eventsList.appendChild(row);
+        });
+      }).catch(e=>{ console.error(e); alert('Failed to load events') });
     }
 
     function deleteEvent(id){
-      if(!confirm('حذف شود؟')) return;
-      db.ref('events/'+id).remove().then(()=>loadEvents());
-      document.getElementById('msg2').innerText =    }
-
-    function copyToClipboard(text){
-      navigator.clipboard?.writeText(text).then(()=>alert('کپی شد')).catch(()=>prompt('کپی کن:', text));
+      if(!confirm('Delete this event?')) return;
+      db.ref('events/' + id).remove().then(()=>loadUserEvents()).catch(e=>alert(e.message));
     }
 
-    // Public view loader
-    function showPublic(id){
-      db.ref('events/'+id).once('value').then(snap=>{
-        const e = snap.val();
-        e.msg2 || '';
-      document if(!e){ alert('رویداد پیدا نشد'); return; }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
+    /* ===== Public view loader & timer ===== */
+    function showPublicEvent(id){
+      if(!id) return;
+      db.ref('events/' + id).once('value').then(snap=>{
+        const e = snap.val();
+        if(!e){ alert('Event not found'); return; }
+
+        // show UI
         dashboardView.style.display = 'none';
         publicView.style.display = 'block';
 
-        missionName.innerText = e.title || 'OPERATION';
-        heroImg.src = e.photoURL || 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=.getElementById('msg80&w=1400&3').innerText = e.msgauto=format&fit=crop&3 || '';
-      document.getixlib=rb-4.0.3&s=2ElementById('copyPublic').a7d8e5b3e2b4b5e1b0c4d6f3a8f7e2b';
-        document.getElementById('onclick = ()=> {
-        constmsg1').value = e.text1 || '';
-        document.getElementById('msg2').value = e.text2 || '';
-        document.getElementById('msg3').value = e.text3 || '';
+        // set content
+        missionTitle.textContent = safeText(e.title || 'OPERATION');
+        heroImg.src = e.photoURL || 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1400&auto=format&fit=crop';
+        document.getElementById('publicMsg1').value = safeText(e.text1 || '');
+        document.getElementById('publicMsg2').value = safeText(e.text2 || '');
+        document.getElementById('publicMsg3').value = safeText(e.text3 || '');
 
-        shareLink.innerText = location.origin + location.pathname + '?id=' + id;
+        const share = location.origin + location.pathname + '?id=' + id;
+        shareUrlEl.textContent = share;
 
         // timer
         if(publicInterval) clearInterval(publicInterval);
-        function update(){
-          const diff = new Date(e.endTime) - new Date();
-          if(isNaN(diff)){ elDays.innerText='--'; elHours.innerText='--'; elMinutes.innerText='--'; elSeconds.innerText='--'; return; }
-          if(diff <= 0){ elDays.innerText='00'; elHours.innerText='00'; elMinutes.innerText link = location.origin + location.pathname='00'; elSeconds.innerText='00'; clearInterval(publicInterval); return; }
+        function updateTimer(){
+          const end = new Date(e.endTime);
+          const diff = end - new Date();
+          if(isNaN(end.getTime())){ daysEl.textContent='--'; hoursEl.textContent='--'; minutesEl.textContent='--'; secondsEl.textContent='--'; return; }
+          if(diff <= 0){ daysEl.textContent='00'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; clearInterval(publicInterval); return; }
           const d = Math.floor(diff / 86400000);
           const h = Math.floor((diff % 86400000) / 3600000);
           const m = Math.floor((diff % 3600000) / 60000);
-          const s + '?id=' + id = Math.floor((diff % 60000) / 1000);
-          elDays.innerText = pad(d);
-          elHours.innerText = pad(h);
-          elMinutes.innerText = pad(m);
-          elSeconds.innerText = pad(s);
+          const s = Math.floor((diff % 60000) / 1000);
+          daysEl.textContent = pad(d);
+          hoursEl.textContent = pad(h);
+          minutesEl.textContent = pad(m);
+          secondsEl.textContent = pad(s);
         }
-        update();
-        publicInterval = setInterval(update, 1000);
-      }).;
-        navigator.clipboard?.writeText(link).then(()=>alertcatch(e=>{ console.error(e); alert('خطا در بارگذاری') });
+        updateTimer();
+        publicInterval = setInterval(updateTimer, 1000);
+      }).catch(e=>{ console.error(e); alert('Error loading public event') });
     }
 
-    function openPublic(id){ window.open(location.pathname + '?id=' + id, '_blank'); }
-    function copyShare(){ copyToClipboard(shareLink.innerText); }
+    function copyShare(){ copyToClipboard(shareUrlEl.textContent || window.location.href); }
+    function openInApp(){ history.replaceState(null,'',location.pathname); publicView.style.display='none'; dashboardView.style.display='block'; if(auth.currentUser) loadUserEvents(); }
 
-    function openInApp(){ // remove id and attempt to show dashboard
-      history.replaceState(null,'',location.pathname);
-      publicView.style.display = 'none';
-      dashboardView.style.display = 'block';
-      if(auth.currentUser) loadEvents();
-    }
-
-    // Utilities
-    function pad(n){ return n<10? '0'+n : String(n('Public link copied'));
-      };
-); }
-    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    // If you want to auto-load when page opened with id param
-    if(public      // populate events list (Id) {
-      // already handled above
+    /* ===== Init ===== */
+    if(publicId){
+      // load public directly and don't force login
+      showPublicEvent(publicId);
     } else {
-      // initial load of events if logged in
-      if(authsimple)
-      const list = document.getElementById('events.currentUser) loadEvents();
+      // show dashboard by default; auth state will load events if logged in
+      dashboardView.style.display = 'block';
+      publicView.style.display = 'none';
+      if(auth.currentUser) loadUserEvents();
     }
+
+    // small safeguard: if Firebase not reachable, show message in console
+    db.ref('.info/connected').once('value').catch(()=>console.warn('Firebase DB not reachable — check config/rules'));
   </script>
 </body>
 </html>
