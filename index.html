@@ -57,7 +57,7 @@ a{color:#38bdf8}
   <h3>Login</h3>
   <input id="email" placeholder="email">
   <input id="password" type="password" placeholder="password">
-  <button onclick="login()">Login</button>
+  <button onclick="loginUser()">Login</button>
 </div>
 
 <!-- DASHBOARD -->
@@ -66,7 +66,7 @@ a{color:#38bdf8}
   <h3>Create Event</h3>
   <input id="title" placeholder="Event title">
   <input id="time" type="datetime-local">
-  <button onclick="createEvent()">Create</button>
+  <button onclick="createNewEvent()">Create</button>
 
   <h3>Your Events</h3>
   <div id="list"></div>
@@ -88,7 +88,7 @@ a{color:#38bdf8}
 
 <script>
 
-// 🔥 YOUR FIREBASE CONFIG (اینجا رو خودت پر کن)
+// 🔥 Firebase Config (حتماً پر کن)
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_AUTH_DOMAIN",
@@ -104,10 +104,11 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// =======================
+// =====================
 // LOGIN
-// =======================
-function login(){
+// =====================
+function loginUser(){
+
   const emailVal = document.getElementById("email").value;
   const passVal = document.getElementById("password").value;
 
@@ -118,21 +119,29 @@ function login(){
   .catch(err=>{
     alert(err.message);
   });
+
 }
 
-// =======================
+// =====================
 // SHOW DASHBOARD
-// =======================
+// =====================
 function showDashboard(){
   loginBox.style.display="none";
   dashboard.style.display="block";
   loadEvents();
 }
 
-// =======================
-// CREATE EVENT
-// =======================
-function createEvent(){
+// =====================
+// CREATE EVENT (FIXED)
+// =====================
+function createNewEvent(){
+
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("User not ready yet");
+    return;
+  }
 
   const titleVal = document.getElementById("title").value;
   const timeVal = document.getElementById("time").value;
@@ -147,17 +156,19 @@ function createEvent(){
   db.ref("events/"+id).set({
     title: titleVal,
     endTime: timeVal,
-    uid: auth.currentUser.uid
+    uid: user.uid
   }).then(()=>{
     alert("Event created!");
     loadEvents();
+  }).catch(err=>{
+    alert(err.message);
   });
 
 }
 
-// =======================
+// =====================
 // LOAD EVENTS
-// =======================
+// =====================
 function loadEvents(){
 
   db.ref("events").on("value", snap=>{
@@ -180,9 +191,9 @@ function loadEvents(){
 
 }
 
-// =======================
+// =====================
 // PUBLIC TIMER
-// =======================
+// =====================
 function loadPublic(id){
 
   db.ref("events/"+id).once("value", snap=>{
@@ -217,9 +228,9 @@ function loadPublic(id){
 
 }
 
-// =======================
+// =====================
 // ROUTER
-// =======================
+// =====================
 const params = new URLSearchParams(location.search);
 
 if(params.get("id")){
