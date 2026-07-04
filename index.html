@@ -30,12 +30,18 @@ input, button{
   padding:10px;
   margin:5px;
   border-radius:10px;
+  border:none;
+}
+
+button{
+  cursor:pointer;
 }
 
 a{color:#38bdf8}
 
 #timer{
   font-size:60px;
+  margin-top:20px;
 }
 </style>
 </head>
@@ -69,8 +75,8 @@ a{color:#38bdf8}
 
 <!-- PUBLIC -->
 <div id="public" style="display:none">
-  <h1 id="eventTitle"></h1>
-  <div id="timer"></div>
+  <h2 id="eventTitle"></h2>
+  <div id="timer">Loading...</div>
 </div>
 
 </div>
@@ -82,11 +88,15 @@ a{color:#38bdf8}
 
 <script>
 
+// 🔥 YOUR FIREBASE CONFIG (اینجا رو خودت پر کن)
 const firebaseConfig = {
-  apiKey: "AIzaSyA7SH4jNcMnnNi_zH8q-JVjSsS2zQ912yk",
-  authDomain: "countdown-6308f.firebaseapp.com",
-  databaseURL: "https://countdown-6308f-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "countdown-6308f"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -94,36 +104,62 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-let currentEvent = null;
-
+// =======================
 // LOGIN
+// =======================
 function login(){
-  auth.signInWithEmailAndPassword(email.value, password.value)
-  .then(showDashboard);
+  const emailVal = document.getElementById("email").value;
+  const passVal = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(emailVal, passVal)
+  .then(()=>{
+    showDashboard();
+  })
+  .catch(err=>{
+    alert(err.message);
+  });
 }
 
-// DASHBOARD
+// =======================
+// SHOW DASHBOARD
+// =======================
 function showDashboard(){
   loginBox.style.display="none";
   dashboard.style.display="block";
   loadEvents();
 }
 
+// =======================
 // CREATE EVENT
+// =======================
 function createEvent(){
+
+  const titleVal = document.getElementById("title").value;
+  const timeVal = document.getElementById("time").value;
+
+  if(!titleVal || !timeVal){
+    alert("Fill all fields");
+    return;
+  }
+
   const id = "ev_" + Date.now();
 
   db.ref("events/"+id).set({
-    title: title.value,
-    endTime: time.value,
+    title: titleVal,
+    endTime: timeVal,
     uid: auth.currentUser.uid
+  }).then(()=>{
+    alert("Event created!");
+    loadEvents();
   });
 
-  loadEvents();
 }
 
+// =======================
 // LOAD EVENTS
+// =======================
 function loadEvents(){
+
   db.ref("events").on("value", snap=>{
     const data = snap.val();
     list.innerHTML = "";
@@ -135,16 +171,20 @@ function loadEvents(){
         list.innerHTML += `
           <div class="card">
             <b>${e.title}</b><br>
-            <a href="?id=${id}">Open</a>
+            <a href="?id=${id}">Open Link</a>
           </div>
         `;
       }
     }
   });
+
 }
 
-// PUBLIC VIEW
+// =======================
+// PUBLIC TIMER
+// =======================
 function loadPublic(id){
+
   db.ref("events/"+id).once("value", snap=>{
     const e = snap.val();
     if(!e) return;
@@ -172,11 +212,16 @@ function loadPublic(id){
       timer.innerText = `${d}d ${h}h ${m}m ${s}s`;
 
     },1000);
+
   });
+
 }
 
+// =======================
 // ROUTER
+// =======================
 const params = new URLSearchParams(location.search);
+
 if(params.get("id")){
   loadPublic(params.get("id"));
 }
